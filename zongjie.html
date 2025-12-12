@@ -128,7 +128,7 @@
 
         .tape-on-board {
             position: absolute;
-            top: -12px; /* 修复：从 15px 改回负值，因为图片现在没有透明边框了 */
+            top: -12px;
             left: 50%;
             transform: translateX(-50%) rotate(-1deg);
             width: 100px;
@@ -516,63 +516,7 @@
     <div id="darkroom">
         <div id="capture-target">
             <div id="polaroidCard" class="polaroid-card">
-                <div class="tape-main" id="renderTape"></div>
-
-                <div id="januaryHeader" class="mb-5 relative">
-                    <div class="absolute -top-6 -right-4 text-7xl font-playfair font-black text-slate-200 select-none z-0 opacity-80 rotate-12">2025</div>
-                    <div class="relative z-10 text-center">
-                        <h2 id="viewMainTitle" class="text-4xl font-serif-sc font-bold text-vintage-brown tracking-wider mb-3 mt-4">文手年度总结</h2>
-                        <div class="inline-flex flex-col items-center">
-                            <div class="py-1 px-5 flex items-center gap-2">
-                                <span class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">WRITTEN BY</span>
-                                <span class="font-serif-sc font-bold text-vintage-brown text-sm" id="viewFiller">NAME</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between mb-4 pb-2">
-                    <div class="flex items-baseline gap-3">
-                        <div class="text-4xl font-playfair font-black text-vintage-brown leading-none uppercase tracking-tight" id="viewMonthName">JAN</div>
-                        <div class="h-6 w-[1px] bg-classic-gold rotate-12" id="viewDivider"></div>
-                        <div class="text-lg font-serif-sc font-bold text-classic-gold leading-none" id="viewMonthCN">一月</div>
-                    </div>
-                    <div class="text-5xl font-playfair font-bold text-slate-100 select-none" id="viewMonthNum">01</div>
-                </div>
-
-                <div class="flex-1 flex flex-col gap-6 relative z-10">
-                    <div class="flex flex-col gap-2 px-1">
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded uppercase tracking-wider min-w-fit">Title</span>
-                            <span class="text-lg font-serif-sc font-bold text-vintage-brown w-full leading-tight" id="viewWorkTitle">无题</span>
-                        </div>
-                        <div class="flex items-center gap-2" id="viewCPRow">
-                            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded uppercase tracking-wider min-w-fit">CP</span>
-                            <!-- 修改：不再使用 bg-yellow-100 类，改为JS动态控制 -->
-                            <span class="px-2 py-0.5 rounded text-sm font-bold text-vintage-brown font-serif-sc" id="viewCP">---</span>
-                        </div>
-                    </div>
-
-                    <div class="relative paper-scrap p-4 rotate-1 bg-white transform transition-transform" id="viewSnippetContainer">
-                        <div id="viewSnippet" class="font-serif-sc text-slate-700 text-sm leading-7 text-justify whitespace-pre-wrap">
-                            等待输入...
-                        </div>
-                    </div>
-
-                    <div class="mt-auto pt-2">
-                         <div class="relative paper-scrap p-3 bg-yellow-50 -rotate-1 transform transition-transform" id="viewFreeTalkContainer">
-                             <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-4 tape-gold -rotate-2 z-10"></div>
-                             <div class="text-[10px] font-bold text-classic-gold uppercase tracking-wider mb-1" id="viewFreeTalkLabel">Free Talk</div>
-                             <div id="viewFreeTalk" class="text-xs text-slate-600 leading-relaxed font-serif-sc relative z-10">
-                                 ...
-                             </div>
-                         </div>
-                    </div>
-                </div>
-                
-                <div class="absolute bottom-3 right-6">
-                    <span class="text-[10px] text-slate-300 font-playfair italic">Writer's Log</span>
-                </div>
+                <!-- 这里的 HTML 内容将由 JS 动态生成 -->
             </div>
         </div>
     </div>
@@ -586,6 +530,10 @@
             </div>
             <div class="flex items-center gap-3">
                 <span class="text-sm font-bold text-[#5D4037] bg-white/80 px-3 py-1.5 rounded-full shadow-md border border-[#D8D0C5]" id="countBadge">0 张</span>
+                <!-- 新增打赏按钮 -->
+                <button onclick="toggleDonateModal()" class="text-sm font-bold bg-[#ec4899] text-white border border-[#db2777] px-3 py-1.5 rounded-full shadow-md hover:bg-[#db2777] transition-colors flex items-center gap-2">
+                    <span>🥤</span> 我要打赏
+                </button>
                 <button onclick="exportFullBoard()" class="text-sm font-bold bg-vintage-brown text-white border border-[#D9825B] px-3 py-1.5 rounded-full shadow-md hover:bg-[#D9825B] transition-colors flex items-center gap-2">
                     <span>🖼️</span> 导出白板长图
                 </button>
@@ -596,7 +544,6 @@
         </div>
         
         <div id="galleryContainer" class="flex-1 overflow-y-auto p-12 pt-96 flex flex-wrap content-start gap-12 justify-center relative">
-            
             <div class="camera-container" id="camera">
                 <div class="camera-body">
                     <div class="viewfinder"></div>
@@ -611,7 +558,6 @@
                     <div class="shutter-btn"></div>
                 </div>
             </div>
-
             <div class="w-full flex flex-col items-center justify-center mt-12 text-[#5D4037] opacity-40 select-none pointer-events-none" id="emptyState">
                 <div class="text-7xl mb-4 grayscale animate-pulse">📷</div>
                 <p class="text-lg font-serif-sc">在左侧输入，点击 SNAP<br>填满这面墙</p>
@@ -619,7 +565,25 @@
         </div>
     </div>
 
+    <!-- Donation Modal -->
+    <div id="donateModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm" onclick="toggleDonateModal()">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center relative transform transition-all scale-100" onclick="event.stopPropagation()">
+            <button onclick="toggleDonateModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="mb-4 overflow-hidden rounded-xl border-2 border-orange-100">
+                <!-- User's QR code image URL -->
+                <img src="https://youke2.picui.cn/s1/2025/12/12/693c0d01e468c.jpg" alt="查理白花猫的收款码" class="w-full h-auto object-cover">
+            </div>
+            <h3 class="text-xl font-bold text-[#5D4037] mb-2 font-serif-sc">给开发者点杯奶茶 🥤</h3>
+            <p class="text-sm text-gray-600 leading-relaxed font-serif-sc">
+                大家好我是查理白花猫，如果你喜欢这个小工具的话，可以自由打赏～本网站永久免费、不接广告。
+            </p>
+        </div>
+    </div>
+
     <script>
+        // 定义全局变量和函数
         const monthData = [
             { num: '01', name: 'JAN', cn: '一月' }, { num: '02', name: 'FEB', cn: '二月' },
             { num: '03', name: 'MAR', cn: '三月' }, { num: '04', name: 'APR', cn: '四月' },
@@ -629,91 +593,95 @@
             { num: '11', name: 'NOV', cn: '十一月' }, { num: '12', name: 'DEC', cn: '十二月' }
         ];
 
-        // 手帐淡雅风配色库 + 高光块颜色
         const palettes = [
-            { name: "原木", bg: "#fdfbf7", text: "#5D4037", accent: "#C5A065", noteBg: "#fff", talkBg: "#fefce8", highlight: "#fef9c3" }, // 黄色
-            { name: "薄荷", bg: "#f0fdf4", text: "#14532d", accent: "#15803d", noteBg: "#fff", talkBg: "#dcfce7", highlight: "#dcfce7" }, // 浅绿
-            { name: "海盐", bg: "#f0f9ff", text: "#0c4a6e", accent: "#0284c7", noteBg: "#fff", talkBg: "#e0f2fe", highlight: "#e0f2fe" }, // 浅蓝
-            { name: "樱花", bg: "#fff1f2", text: "#881337", accent: "#e11d48", noteBg: "#fff", talkBg: "#ffe4e6", highlight: "#ffe4e6" }, // 浅粉
-            { name: "香芋", bg: "#faf5ff", text: "#581c87", accent: "#9333ea", noteBg: "#fff", talkBg: "#f3e8ff", highlight: "#f3e8ff" }, // 浅紫
-            { name: "迷雾", bg: "#f8fafc", text: "#334155", accent: "#64748b", noteBg: "#fff", talkBg: "#f1f5f9", highlight: "#f1f5f9" }  // 浅灰
+            { name: "原木", bg: "#fdfbf7", text: "#5D4037", accent: "#C5A065", noteBg: "#fff", talkBg: "#fefce8", highlight: "#fef9c3" },
+            { name: "薄荷", bg: "#f0fdf4", text: "#14532d", accent: "#15803d", noteBg: "#fff", talkBg: "#dcfce7", highlight: "#dcfce7" },
+            { name: "海盐", bg: "#f0f9ff", text: "#0c4a6e", accent: "#0284c7", noteBg: "#fff", talkBg: "#e0f2fe", highlight: "#e0f2fe" },
+            { name: "樱花", bg: "#fff1f2", text: "#881337", accent: "#e11d48", noteBg: "#fff", talkBg: "#ffe4e6", highlight: "#ffe4e6" },
+            { name: "香芋", bg: "#faf5ff", text: "#581c87", accent: "#9333ea", noteBg: "#fff", talkBg: "#f3e8ff", highlight: "#f3e8ff" },
+            { name: "迷雾", bg: "#f8fafc", text: "#334155", accent: "#64748b", noteBg: "#fff", talkBg: "#f1f5f9", highlight: "#f1f5f9" }
         ];
 
         let generatedPhotos = []; 
         let isGenerating = false;
         let selectedPaletteIndex = -1;
-        let db; // Database instance
+        let db;
 
-        // 1. 初始化 DB
-        function initDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open("WriterSummaryPolaroidDB", 1);
-                
-                request.onerror = (event) => {
-                    console.error("Database error: ", event.target.error);
-                    reject(event.target.error);
-                };
-
-                request.onupgradeneeded = (event) => {
-                    const db = event.target.result;
-                    // Create object store for photos with 'id' as keyPath
-                    if (!db.objectStoreNames.contains("photos")) {
-                        db.createObjectStore("photos", { keyPath: "id" });
-                    }
-                };
-
-                request.onsuccess = (event) => {
-                    db = event.target.result;
-                    resolve(db);
-                };
-            });
+        // 打赏弹窗功能
+        function toggleDonateModal() {
+            const modal = document.getElementById('donateModal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
         }
 
-        // 2. Load photos on start
-        async function loadPhotosFromDB() {
-            if (!db) return;
-            return new Promise((resolve) => {
-                const transaction = db.transaction(["photos"], "readonly");
-                const objectStore = transaction.objectStore("photos");
-                const request = objectStore.getAll();
-
-                request.onsuccess = (event) => {
-                    const photos = event.target.result;
-                    // Render saved photos
-                    photos.forEach(photo => {
-                        generatedPhotos.push(photo);
-                        renderPhotoToGallery(photo, false); // false = no animation
-                    });
-                    updateCount();
-                    if(photos.length > 0) {
-                        document.getElementById('emptyState').style.display = 'none';
-                    }
-                    resolve();
-                };
-            });
+        // --- 模板渲染逻辑 (仅保留经典模板A) ---
+        function renderCardContent() {
+            const card = document.getElementById('polaroidCard');
+            card.innerHTML = `
+                <div class="tape-main" id="renderTape"></div>
+                <div id="januaryHeader" class="mb-5 relative">
+                    <div class="absolute -top-6 -right-4 text-7xl font-playfair font-black text-slate-200 select-none z-0 opacity-80 rotate-12">2025</div>
+                    <div class="relative z-10 text-center">
+                        <h2 id="viewMainTitle" class="text-4xl font-serif-sc font-bold text-vintage-brown tracking-wider mb-3 mt-4">文手年度总结</h2>
+                        <div class="inline-flex flex-col items-center">
+                            <div class="py-1 px-5 flex items-center gap-2">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">WRITTEN BY</span>
+                                <span class="font-serif-sc font-bold text-vintage-brown text-sm" id="viewFiller">NAME</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mb-4 pb-2">
+                    <div class="flex items-baseline gap-3">
+                        <div class="text-4xl font-playfair font-black text-vintage-brown leading-none uppercase tracking-tight" id="viewMonthName">JAN</div>
+                        <div class="h-6 w-[1px] bg-classic-gold rotate-12" id="viewDivider"></div>
+                        <div class="text-lg font-serif-sc font-bold text-classic-gold leading-none" id="viewMonthCN">一月</div>
+                    </div>
+                    <div class="text-5xl font-playfair font-bold text-slate-100 select-none" id="viewMonthNum">01</div>
+                </div>
+                <div class="flex-1 flex flex-col gap-6 relative z-10">
+                    <div class="flex flex-col gap-2 px-1">
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded uppercase tracking-wider min-w-fit">Title</span>
+                            <span class="text-lg font-serif-sc font-bold text-vintage-brown w-full leading-tight" id="viewWorkTitle">无题</span>
+                        </div>
+                        <div class="flex items-center gap-2" id="viewCPRow">
+                            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded uppercase tracking-wider min-w-fit">CP</span>
+                            <span class="px-2 py-0.5 rounded text-sm font-bold text-vintage-brown font-serif-sc" id="viewCP">---</span>
+                        </div>
+                    </div>
+                    <div class="relative paper-scrap p-4 rotate-1 bg-white transform transition-transform" id="viewSnippetContainer">
+                        <div id="viewSnippet" class="font-serif-sc text-slate-700 text-sm leading-7 text-justify whitespace-pre-wrap">等待输入...</div>
+                    </div>
+                    <div class="mt-auto pt-2">
+                         <div class="relative paper-scrap p-3 bg-yellow-50 -rotate-1 transform transition-transform" id="viewFreeTalkContainer">
+                             <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-4 tape-gold -rotate-2 z-10"></div>
+                             <div class="text-[10px] font-bold text-classic-gold uppercase tracking-wider mb-1" id="viewFreeTalkLabel">Free Talk</div>
+                             <div id="viewFreeTalk" class="text-xs text-slate-600 leading-relaxed font-serif-sc relative z-10">...</div>
+                         </div>
+                    </div>
+                </div>
+                <div class="absolute bottom-3 right-6">
+                    <span class="text-[10px] text-slate-300 font-playfair italic">Writer's Log</span>
+                </div>
+            `;
+            
+            updatePreview(); 
+            if (selectedPaletteIndex !== -1) {
+                applyPalette(palettes[selectedPaletteIndex]);
+            } else {
+                applyPalette(palettes[0]);
+            }
         }
 
-        // 3. Save photo
-        function savePhotoToDB(photoObj) {
-            if (!db) return;
-            const transaction = db.transaction(["photos"], "readwrite");
-            const objectStore = transaction.objectStore("photos");
-            objectStore.add(photoObj);
-        }
-
-        // 4. Delete photo
-        function deletePhotoFromDB(id) {
-            if (!db) return;
-            const transaction = db.transaction(["photos"], "readwrite");
-            const objectStore = transaction.objectStore("photos");
-            objectStore.delete(id);
-        }
-
+        // 初始化函数
         window.onload = async function() {
+            renderCardContent(); // 初始化卡片内容
             handleMonthChange();
-            updatePreview();
             renderPaletteSelector();
-            applyPalette(palettes[0]); 
             
             try {
                 await initDB();
@@ -723,17 +691,59 @@
             }
         };
 
+        // IndexedDB 相关函数
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open("WriterSummaryPolaroidDB", 1);
+                request.onerror = (event) => reject(event.target.error);
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains("photos")) db.createObjectStore("photos", { keyPath: "id" });
+                };
+                request.onsuccess = (event) => {
+                    db = event.target.result;
+                    resolve(db);
+                };
+            });
+        }
+
+        async function loadPhotosFromDB() {
+            if (!db) return;
+            return new Promise((resolve) => {
+                const transaction = db.transaction(["photos"], "readonly");
+                const store = transaction.objectStore("photos");
+                store.getAll().onsuccess = (event) => {
+                    event.target.result.forEach(photo => {
+                        generatedPhotos.push(photo);
+                        renderPhotoToGallery(photo, false);
+                    });
+                    updateCount();
+                    if(generatedPhotos.length > 0) document.getElementById('emptyState').style.display = 'none';
+                    resolve();
+                };
+            });
+        }
+
+        function savePhotoToDB(photo) {
+            if (!db) return;
+            db.transaction(["photos"], "readwrite").objectStore("photos").add(photo);
+        }
+
+        function deletePhotoFromDB(id) {
+            if (!db) return;
+            db.transaction(["photos"], "readwrite").objectStore("photos").delete(id);
+        }
+
+        // 颜色选择器逻辑
         function renderPaletteSelector() {
             const container = document.getElementById('paletteSelector');
             container.innerHTML = '';
-
             const randomBtn = document.createElement('div');
             randomBtn.className = 'color-dot random-dot-bg selected';
             randomBtn.title = "随机配色";
             randomBtn.innerHTML = '<span class="flex items-center justify-center w-full h-full text-[10px] text-gray-500 font-bold">?</span>';
             randomBtn.onclick = () => selectPalette(-1, randomBtn);
             container.appendChild(randomBtn);
-
             palettes.forEach((palette, index) => {
                 const btn = document.createElement('div');
                 btn.className = 'color-dot';
@@ -747,67 +757,66 @@
 
         function selectPalette(index, clickedBtn) {
             selectedPaletteIndex = index;
-            
-            const allDots = document.querySelectorAll('.color-dot');
-            allDots.forEach(dot => dot.classList.remove('selected'));
+            document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('selected'));
             clickedBtn.classList.add('selected');
-
-            if (index !== -1) {
-                applyPalette(palettes[index]);
-            }
+            if (index !== -1) applyPalette(palettes[index]);
         }
 
         function applyPalette(palette) {
             const card = document.getElementById('polaroidCard');
             card.style.backgroundColor = palette.bg;
 
-            const titles = ['viewMainTitle', 'viewFiller', 'viewMonthName', 'viewWorkTitle', 'viewCP'];
-            titles.forEach(id => {
+            ['viewMainTitle', 'viewFiller', 'viewWorkTitle', 'viewMonthName'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.style.color = palette.text;
             });
 
-            const accents = ['viewMonthCN', 'viewFreeTalkLabel'];
-            accents.forEach(id => {
+            ['viewMonthCN', 'viewFreeTalkLabel'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.style.color = palette.accent;
             });
-            
             const divider = document.getElementById('viewDivider');
             if(divider) divider.style.backgroundColor = palette.accent;
 
-            const snippetContainer = document.getElementById('viewSnippetContainer');
-            if(snippetContainer) snippetContainer.style.backgroundColor = palette.noteBg;
-
             const freeTalkContainer = document.getElementById('viewFreeTalkContainer');
-            if(freeTalkContainer) freeTalkContainer.style.backgroundColor = palette.talkBg;
+            if(freeTalkContainer) {
+                freeTalkContainer.style.backgroundColor = palette.talkBg;
+                freeTalkContainer.style.borderLeft = 'none';
+            }
+            
+            const freeTalkLabel = document.getElementById('viewFreeTalkLabel');
+            if(freeTalkLabel) freeTalkLabel.style.color = palette.accent;
+
+            const snippetContainer = document.getElementById('viewSnippetContainer');
+            if(snippetContainer) {
+                snippetContainer.style.backgroundColor = palette.noteBg;
+            }
 
             const cpEl = document.getElementById('viewCP');
             if (cpEl) {
                 cpEl.style.backgroundColor = palette.highlight;
+                cpEl.style.color = palette.text;
             }
         }
 
         function handleMonthChange() {
             const select = document.getElementById('monthSelect');
-            const monthIndex = parseInt(select.value) - 1;
-            const data = monthData[monthIndex];
-
+            const data = monthData[parseInt(select.value) - 1];
+            
+            const mNum = document.getElementById('viewMonthNum');
+            if(mNum) mNum.textContent = data.num;
+            const mName = document.getElementById('viewMonthName');
+            if(mName) mName.textContent = data.name;
+            const mCN = document.getElementById('viewMonthCN');
+            if(mCN) mCN.textContent = data.cn;
+            
             const janFields = document.getElementById('januaryOnlyFields');
             const janHeader = document.getElementById('januaryHeader');
+            const isJan = data.num === '01';
             
-            if (data.num === '01') {
-                janFields.classList.remove('hidden');
-                janHeader.style.display = 'block';
-            } else {
-                janFields.classList.add('hidden');
-                janHeader.style.display = 'none';
-            }
-
-            document.getElementById('viewMonthNum').textContent = data.num;
-            document.getElementById('viewMonthName').textContent = data.name;
-            document.getElementById('viewMonthCN').textContent = data.cn;
-
+            if (janFields) janFields.classList.toggle('hidden', !isJan);
+            if (janHeader) janHeader.style.display = isJan ? 'block' : 'none';
+            
             updatePreview();
         }
 
@@ -815,80 +824,34 @@
             const mainTitle = document.getElementById('inputMainTitle').value || '文手年度总结';
             const filler = document.getElementById('inputFiller').value || '---';
             const workTitle = document.getElementById('inputWorkTitle').value || '无题';
-            const cpInput = document.getElementById('inputCP');
+            const cpVal = document.getElementById('inputCP').value.trim();
             const snippet = document.getElementById('inputSnippet').value || '（等待生成...）';
             const freeTalk = document.getElementById('inputFreeTalk').value || '...';
 
-            document.getElementById('viewMainTitle').textContent = mainTitle;
-            document.getElementById('viewFiller').textContent = filler.toUpperCase();
-            document.getElementById('viewWorkTitle').textContent = workTitle;
+            const elMainTitle = document.getElementById('viewMainTitle');
+            if(elMainTitle) elMainTitle.textContent = mainTitle;
             
-            const cpVal = cpInput.value.trim();
+            const elFiller = document.getElementById('viewFiller');
+            if(elFiller) elFiller.textContent = filler.toUpperCase();
+            
+            const elWorkTitle = document.getElementById('viewWorkTitle');
+            if(elWorkTitle) elWorkTitle.textContent = workTitle;
+            
             const cpRow = document.getElementById('viewCPRow');
-            if (cpVal) {
-                cpRow.style.display = 'flex';
-                document.getElementById('viewCP').textContent = cpVal;
-            } else {
-                cpRow.style.display = 'none';
+            if (cpRow) {
+                if (cpVal) {
+                    cpRow.style.display = 'flex';
+                    document.getElementById('viewCP').textContent = cpVal;
+                } else {
+                    cpRow.style.display = 'none';
+                }
             }
 
-            document.getElementById('viewSnippet').textContent = snippet;
-            document.getElementById('viewFreeTalk').textContent = freeTalk;
-        }
-
-        // Separate function to render photo to DOM
-        function renderPhotoToGallery(photoObj, animate = true) {
-            const gallery = document.getElementById('galleryContainer');
-            const placeholder = document.createElement('div');
+            const elSnippet = document.getElementById('viewSnippet');
+            if(elSnippet) elSnippet.textContent = snippet;
             
-            if(animate) {
-                // Animation logic (create flying img etc.)
-                // This logic is coupled with generation, let's keep it simple for reload
-                // For reload, we just append. For new gen, we do animation in generateImage then call this?
-                // Actually, let's just use the wrapper creation logic here.
-            }
-
-            // Create wrapper
-            const wrapper = document.createElement('div');
-            wrapper.className = 'gallery-wrapper';
-            // Random rotate for variety or use saved if we saved it? 
-            // We didn't save rotation in previous step, let's generate deterministic random based on ID or just random
-            // Better to save rotation. But for now random is fine on reload.
-            const randomRotate = Math.random() * 6 - 3; 
-            wrapper.style.transform = `rotate(${randomRotate}deg)`;
-            wrapper.dataset.photoId = photoObj.id; 
-
-            const tape = document.createElement('div');
-            tape.className = 'tape-on-board';
-            
-            const img = new Image();
-            img.src = photoObj.data;
-            img.className = 'gallery-image';
-            
-            const dlBtn = document.createElement('button');
-            dlBtn.className = 'download-btn-single';
-            dlBtn.innerHTML = '⬇';
-            dlBtn.title = '下载原图';
-            dlBtn.onclick = (e) => {
-                e.stopPropagation();
-                downloadPhoto(photoObj.id); 
-            };
-
-            const delBtn = document.createElement('button');
-            delBtn.className = 'delete-btn-single';
-            delBtn.innerHTML = '×'; 
-            delBtn.title = '删除照片';
-            delBtn.onclick = (e) => {
-                e.stopPropagation();
-                deletePhoto(photoObj.id, wrapper);
-            };
-
-            wrapper.appendChild(tape);
-            wrapper.appendChild(img);
-            wrapper.appendChild(dlBtn);
-            wrapper.appendChild(delBtn);
-
-            gallery.appendChild(wrapper);
+            const elFreeTalk = document.getElementById('viewFreeTalk');
+            if(elFreeTalk) elFreeTalk.textContent = freeTalk;
         }
 
         function generateImage() {
@@ -896,21 +859,19 @@
             isGenerating = true;
 
             if (selectedPaletteIndex === -1) {
-                const randomPalette = palettes[Math.floor(Math.random() * palettes.length)];
-                applyPalette(randomPalette);
+                applyPalette(palettes[Math.floor(Math.random() * palettes.length)]);
             } else {
                 applyPalette(palettes[selectedPaletteIndex]);
             }
 
             const monthVal = parseInt(document.getElementById('monthSelect').value);
-            // 修改点：直接获取 #polaroidCard 而不是 #capture-target
             const target = document.getElementById('polaroidCard'); 
             const gallery = document.getElementById('galleryContainer');
             const btn = document.getElementById('generateBtn');
             const camFlash = document.getElementById('camFlash');
             
             const renderTape = document.getElementById('renderTape');
-            renderTape.style.display = 'none';
+            if(renderTape) renderTape.style.display = 'none';
 
             btn.disabled = true;
             btn.classList.add('opacity-75');
@@ -929,8 +890,7 @@
                         if(clonedCard) clonedCard.style.boxShadow = 'none';
                     }
                 }).then(canvas => {
-                    renderTape.style.display = 'block';
-
+                    if(renderTape) renderTape.style.display = 'block';
                     document.getElementById('emptyState').style.display = 'none';
 
                     const imgData = canvas.toDataURL('image/png');
@@ -942,12 +902,10 @@
                         data: imgData
                     };
                     
-                    // Save to memory
                     generatedPhotos.push(photoObj);
-                    // Save to DB
                     savePhotoToDB(photoObj);
 
-                    // Animation
+                    // Animation logic
                     const flyingImg = document.createElement('img');
                     flyingImg.src = imgData;
                     flyingImg.className = 'flying-photo';
@@ -984,83 +942,64 @@
                         flyingImg.style.transform = `scale(1) rotate(${randomRotate}deg)`;
 
                         setTimeout(() => {
-                            // Instead of calling global render, we construct locally to replace placeholder
-                            const wrapper = document.createElement('div');
-                            wrapper.className = 'gallery-wrapper';
-                            wrapper.style.transform = `rotate(${randomRotate}deg)`;
-                            wrapper.dataset.photoId = photoId; 
-
-                            const tape = document.createElement('div');
-                            tape.className = 'tape-on-board';
-                            
-                            const img = new Image();
-                            img.src = imgData;
-                            img.className = 'gallery-image';
-                            
-                            const dlBtn = document.createElement('button');
-                            dlBtn.className = 'download-btn-single';
-                            dlBtn.innerHTML = '⬇';
-                            dlBtn.title = '下载原图';
-                            dlBtn.onclick = (e) => {
-                                e.stopPropagation();
-                                downloadPhoto(photoId); 
-                            };
-
-                            const delBtn = document.createElement('button');
-                            delBtn.className = 'delete-btn-single';
-                            delBtn.innerHTML = '×'; 
-                            delBtn.title = '删除照片';
-                            delBtn.onclick = (e) => {
-                                e.stopPropagation();
-                                deletePhoto(photoId, wrapper);
-                            };
-
-                            wrapper.appendChild(tape);
-                            wrapper.appendChild(img);
-                            wrapper.appendChild(dlBtn);
-                            wrapper.appendChild(delBtn);
-
-                            gallery.replaceChild(wrapper, placeholder);
-
+                            renderPhotoToGallery(photoObj, false); 
+                            placeholder.remove();
                             flyingImg.remove();
-                            
                             updateCount();
                             isGenerating = false;
                             btn.disabled = false;
                             btn.classList.remove('opacity-75');
-
                         }, 1000); 
-
                     }, 1600); 
-
                 });
             }, 100); 
         }
 
-        function deletePhoto(id, element) {
-            if (element) {
-                element.remove();
-            }
-            generatedPhotos = generatedPhotos.filter(p => p.id !== id);
-            // Delete from DB
-            deletePhotoFromDB(id);
+        function renderPhotoToGallery(photoObj, animate) {
+            const gallery = document.getElementById('galleryContainer');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'gallery-wrapper';
+            wrapper.style.transform = `rotate(${Math.random() * 6 - 3}deg)`;
+            wrapper.dataset.photoId = photoObj.id; 
+
+            const tape = document.createElement('div');
+            tape.className = 'tape-on-board';
+            const img = new Image();
+            img.src = photoObj.data;
+            img.className = 'gallery-image';
             
+            const dlBtn = document.createElement('button');
+            dlBtn.className = 'download-btn-single';
+            dlBtn.innerHTML = '⬇';
+            dlBtn.title = '下载原图';
+            dlBtn.onclick = (e) => { e.stopPropagation(); downloadPhoto(photoObj.id); };
+
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-btn-single';
+            delBtn.innerHTML = '×'; 
+            delBtn.title = '删除照片';
+            delBtn.onclick = (e) => { e.stopPropagation(); deletePhoto(photoObj.id, wrapper); };
+
+            wrapper.appendChild(tape);
+            wrapper.appendChild(img);
+            wrapper.appendChild(dlBtn);
+            wrapper.appendChild(delBtn);
+            gallery.appendChild(wrapper);
+        }
+
+        function deletePhoto(id, element) {
+            if (element) element.remove();
+            generatedPhotos = generatedPhotos.filter(p => p.id !== id);
+            deletePhotoFromDB(id);
             updateCount();
-            if (generatedPhotos.length === 0) {
-                document.getElementById('emptyState').style.display = 'flex';
-            }
+            if (generatedPhotos.length === 0) document.getElementById('emptyState').style.display = 'flex';
         }
 
         function updateCount() {
             const count = generatedPhotos.length;
             document.getElementById('countBadge').textContent = `${count} 张`;
-            
             const dlAllBtn = document.getElementById('downloadAllBtn');
-            if (count > 0) {
-                dlAllBtn.classList.remove('hidden');
-            } else {
-                dlAllBtn.classList.add('hidden');
-            }
+            if (count > 0) dlAllBtn.classList.remove('hidden'); else dlAllBtn.classList.add('hidden');
         }
 
         function downloadPhoto(id) {
@@ -1073,37 +1012,23 @@
         }
 
         function downloadAll() {
-            const zip = new JSZip();
-            
             if (generatedPhotos.length === 0) return;
-
+            const zip = new JSZip();
             generatedPhotos.forEach((item, index) => {
-                const dataUrl = item.data;
-                const base64Data = dataUrl.replace(/^data:image\/(png|jpg);base64,/, "");
-                const fileName = `Summary2025_${monthData[item.monthIdx-1].name}_${index+1}.png`;
-                zip.file(fileName, base64Data, {base64: true});
+                const base64Data = item.data.replace(/^data:image\/(png|jpg);base64,/, "");
+                zip.file(`Summary2025_${monthData[item.monthIdx-1].name}_${index+1}.png`, base64Data, {base64: true});
             });
-
-            zip.generateAsync({type:"blob"})
-            .then(function(content) {
-                saveAs(content, "WriterSummary2025_Polaroids.zip");
-            });
+            zip.generateAsync({type:"blob"}).then(content => saveAs(content, "WriterSummary2025_Polaroids.zip"));
         }
 
         function exportFullBoard() {
             const gallery = document.getElementById('galleryContainer');
             const fillerName = document.getElementById('inputFiller').value || 'Writer';
-            
             const fullHeight = gallery.scrollHeight;
             const fullWidth = gallery.scrollWidth;
 
             html2canvas(gallery, {
-                height: fullHeight,
-                width: fullWidth,
-                windowHeight: fullHeight,
-                scale: 8, 
-                useCORS: true,
-                backgroundColor: '#F0ECE3', 
+                height: fullHeight, width: fullWidth, windowHeight: fullHeight, scale: 8, useCORS: true, backgroundColor: '#F0ECE3', 
                 onclone: (clonedDoc) => {
                     const clonedGallery = clonedDoc.getElementById('galleryContainer');
                     clonedGallery.style.height = fullHeight + 'px';
