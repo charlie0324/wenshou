@@ -17,12 +17,12 @@
             theme: {
                 extend: {
                     colors: {
-                        // 修改：替换掉普鲁士蓝，改为深焦糖/咖啡色
-                        'vintage-brown': '#431407', // 接近黑色的深棕
-                        'burnt-orange': '#9a3412',  // 烧橙色
-                        'classic-gold': '#d97706',
-                        'warm-beige': '#e3dcd1', /* 白板主色调 */
-                        'warm-beige-dark': '#d4cbbd',
+                        'brand-header': '#D9825B', 
+                        'brand-body': '#F6E4D6',   
+                        'vintage-brown': '#5D4037', 
+                        'classic-gold': '#C5A065',  
+                        'warm-beige': '#F0ECE3',    
+                        'warm-beige-dark': '#D8D0C5', 
                         'paper-white': '#fdfbf7',
                     },
                     fontFamily: {
@@ -65,12 +65,13 @@
         /* 拍立得卡片本体 */
         .polaroid-card {
             width: 380px;
-            background-color: #fdfbf7;
+            background-color: #fdfbf7; /* 默认背景，会被JS覆盖 */
             box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
             padding: 24px 24px 50px 24px;
             display: flex;
             flex-direction: column;
             position: relative;
+            transition: background-color 0.3s ease;
         }
 
         /* 顶部大胶带 (装饰用，渲染时会隐藏) */
@@ -104,8 +105,14 @@
             z-index: 100;
         }
 
-        .gallery-wrapper:hover .download-btn-single {
+        /* 悬停时显示的按钮 */
+        .gallery-wrapper:hover .download-btn-single,
+        .gallery-wrapper:hover .delete-btn-single {
             opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .gallery-wrapper:hover .download-btn-single {
             transform: translate(-50%, -50%) scale(1);
         }
 
@@ -121,7 +128,7 @@
 
         .tape-on-board {
             position: absolute;
-            top: 15px; 
+            top: -12px; /* 修复：从 15px 改回负值，因为图片现在没有透明边框了 */
             left: 50%;
             transform: translateX(-50%) rotate(-1deg);
             width: 100px;
@@ -137,8 +144,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.8);
-            /* 修改：单张下载按钮背景色也改为深棕色系 */
-            background: rgba(67, 20, 7, 0.9);
+            background: rgba(154, 52, 18, 0.9);
             color: white;
             width: 50px;
             height: 50px;
@@ -147,6 +153,7 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
+            pointer-events: none; 
             transition: all 0.2s ease;
             z-index: 30;
             border: 2px solid rgba(255,255,255,0.4);
@@ -157,6 +164,32 @@
             background: #d97706;
             border-color: white;
             transform: translate(-50%, -50%) scale(1);
+        }
+
+        .delete-btn-single {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 28px;
+            height: 28px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            z-index: 40;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .delete-btn-single:hover {
+            background: #dc2626; 
+            transform: scale(1.1);
         }
 
         .tape-gold {
@@ -170,6 +203,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.08);
             border: 1px solid rgba(0,0,0,0.03);
             position: relative;
+            transition: background-color 0.3s ease;
         }
 
         ::-webkit-scrollbar { width: 6px; }
@@ -178,14 +212,13 @@
 
         /* 左侧输入区背景 */
         .input-sidebar {
-            background-color: #e3dcd1; /* 与白板一致 */
+            background-color: #F6E4D6; 
         }
 
-        /* 纯净白板背景 (去掉了花纹) */
+        /* 纯净白板背景 */
         .cork-board {
-            background-color: #e3dcd1;
-            /* background-image 移除，保持纯色 */
-            border-left: 8px solid #854d0e; /* 木质边框分隔 */
+            background-color: #F0ECE3;
+            border-left: 8px solid #5D4037;
             position: relative;
         }
 
@@ -219,7 +252,6 @@
             bottom: 25px;
             width: 100%;
             height: 10px;
-            /* 修改：彩虹条保留彩色，这是拍立得的标志，或者您可以要求也改成橙色系？这里暂时保留标志性彩虹 */
             background: linear-gradient(to right, #ff3b30 0%, #ff3b30 20%, #ff9500 20%, #ff9500 40%, #ffcc00 40%, #ffcc00 60%, #4cd964 60%, #4cd964 80%, #007aff 80%, #007aff 100%);
             opacity: 0.9;
         }
@@ -304,16 +336,15 @@
         }
 
         /* -----------------------
-           高级按钮样式 - 修改为橙色系
+           高级按钮样式
            ----------------------- */
         .snap-btn {
-            /* 修改：改为橙色/深棕色渐变 */
-            background: linear-gradient(135deg, #c2410c 0%, #7c2d12 100%);
+            background: linear-gradient(135deg, #D9825B 0%, #A65D3B 100%);
             color: white;
-            border: 2px solid #9a3412;
+            border: 2px solid #A65D3B;
             box-shadow: 
-                0 4px 6px -1px rgba(124, 45, 18, 0.2), 
-                0 2px 4px -1px rgba(124, 45, 18, 0.1),
+                0 4px 6px -1px rgba(93, 64, 55, 0.2), 
+                0 2px 4px -1px rgba(93, 64, 55, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
             transition: all 0.2s ease;
             text-transform: uppercase;
@@ -323,10 +354,10 @@
         .snap-btn:hover {
             transform: translateY(-2px);
             box-shadow: 
-                0 10px 15px -3px rgba(124, 45, 18, 0.3), 
-                0 4px 6px -2px rgba(124, 45, 18, 0.1),
+                0 10px 15px -3px rgba(93, 64, 55, 0.3), 
+                0 4px 6px -2px rgba(93, 64, 55, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            border-color: #ea580c;
+            border-color: #D9825B;
         }
 
         .snap-btn:active {
@@ -339,7 +370,6 @@
             transform: none;
         }
 
-        /* 闪光效果装饰 */
         .snap-btn::after {
             content: '';
             position: absolute;
@@ -355,24 +385,49 @@
             transition: 0.7s ease-in-out;
         }
 
+        /* 颜色选择器圆点样式 */
+        .color-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent; /* 默认透明边框 */
+            transition: all 0.2s;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .color-dot:hover {
+            transform: scale(1.1);
+        }
+        /* 选中状态：双层圈效果 */
+        .color-dot.selected {
+            border-color: #5D4037; /* 深摩卡色外边框 */
+            transform: scale(1.1);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        /* 随机按钮的渐变背景 */
+        .random-dot-bg {
+            background: linear-gradient(135deg, #fdfbf7 0%, #ffe4e6 20%, #dcfce7 40%, #e0f2fe 60%, #f3e8ff 80%, #f1f5f9 100%);
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- 左侧：输入控制区 (修改背景色) -->
-    <div class="w-[400px] input-sidebar border-r border-[#854d0e] flex flex-col h-full z-20 shadow-2xl flex-shrink-0">
-        <!-- 修改：背景色改为 vintage-brown -->
-        <div class="p-8 bg-vintage-brown text-white relative overflow-hidden">
-            <div class="absolute -right-4 -top-4 w-28 h-28 bg-classic-gold rounded-full opacity-20 blur-xl"></div>
+    <!-- 左侧：输入控制区 -->
+    <div class="w-[400px] input-sidebar border-r border-[#D9825B] flex flex-col h-full z-20 shadow-2xl flex-shrink-0">
+        <div class="p-8 bg-brand-header text-white relative overflow-hidden">
+            <div class="absolute -right-4 -top-4 w-28 h-28 bg-white/20 rounded-full opacity-50 blur-xl"></div>
             <h1 class="text-3xl font-bold font-serif-sc tracking-widest relative z-10">文手年度总结</h1>
-            <p class="text-sm text-[#fdba74] mt-2 font-serif-sc relative z-10 opacity-80 italic">Surprise Polaroid Edition</p>
+            <p class="text-sm text-white/80 mt-2 font-serif-sc relative z-10 opacity-80 italic">Surprise Polaroid Edition</p>
         </div>
         
         <div class="flex-1 overflow-y-auto p-8 space-y-8">
             <div class="group">
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Select Month</label>
+                <label class="block text-xs font-bold text-[#5D4037] uppercase tracking-widest mb-3">Select Month</label>
                 <div class="relative">
-                    <select id="monthSelect" onchange="handleMonthChange()" class="w-full p-3 pl-4 border border-[#d4cbbd] rounded-lg shadow-sm focus:ring-2 focus:ring-classic-gold focus:border-classic-gold bg-[#fdfbf7] text-slate-700 appearance-none font-serif-sc font-bold text-lg">
+                    <select id="monthSelect" onchange="handleMonthChange()" class="w-full p-3 pl-4 border-2 border-[#D8D0C5] rounded-lg shadow-sm focus:ring-2 focus:ring-[#D9825B] focus:border-[#D9825B] bg-white/90 text-[#5D4037] appearance-none font-serif-sc font-bold text-lg">
                         <option value="1">一月 (January)</option>
                         <option value="2">二月 (February)</option>
                         <option value="3">三月 (March)</option>
@@ -386,67 +441,74 @@
                         <option value="11">十一月 (November)</option>
                         <option value="12">十二月 (December)</option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#5D4037]">
                         <svg class="h-5 w-5 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
                     </div>
                 </div>
             </div>
 
-            <!-- 输入框背景 -->
-            <div id="januaryOnlyFields" class="space-y-4 bg-[#fdfbf7]/60 p-5 rounded-xl border border-[#d4cbbd] relative overflow-hidden shadow-inner">
-                <div class="absolute top-0 left-0 w-1.5 h-full bg-classic-gold"></div>
-                <div class="text-xs text-classic-gold font-bold uppercase tracking-wider mb-2 flex items-center gap-2">
+            <!-- 颜色选择器区域 -->
+            <div class="group">
+                <label class="block text-xs font-bold text-[#5D4037] uppercase tracking-widest mb-3">Style Palette</label>
+                <div class="flex flex-wrap gap-3 items-center" id="paletteSelector">
+                    <!-- JS 将在这里插入圆点 -->
+                </div>
+            </div>
+
+            <!-- 输入框容器背景 -->
+            <div id="januaryOnlyFields" class="space-y-4 bg-white/40 p-5 rounded-xl border border-[#D8D0C5] relative overflow-hidden shadow-sm">
+                <div class="absolute top-0 left-0 w-1.5 h-full bg-[#D9825B]"></div>
+                <div class="text-xs text-[#D9825B] font-bold uppercase tracking-wider mb-2 flex items-center gap-2">
                     <span>✨ Annual Settings</span>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-500 mb-1">年度标题</label>
+                    <label class="block text-xs font-medium text-[#5D4037] mb-1">年度标题</label>
                     <input type="text" id="inputMainTitle" value="文手年度总结" 
-                           class="w-full p-2 border-b border-[#d4cbbd] bg-transparent focus:border-classic-gold focus:outline-none transition-colors text-base" oninput="updatePreview()">
+                           class="w-full p-2 border-b border-[#D8D0C5] bg-transparent focus:border-[#D9825B] focus:outline-none transition-colors text-base text-[#5D4037] placeholder-[#A69B95]" oninput="updatePreview()">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-500 mb-1">填表人</label>
+                    <label class="block text-xs font-medium text-[#5D4037] mb-1">填表人</label>
                     <input type="text" id="inputFiller" placeholder="你的笔名" 
-                           class="w-full p-2 border-b border-[#d4cbbd] bg-transparent focus:border-classic-gold focus:outline-none transition-colors text-base" oninput="updatePreview()">
+                           class="w-full p-2 border-b border-[#D8D0C5] bg-transparent focus:border-[#D9825B] focus:outline-none transition-colors text-base text-[#5D4037] placeholder-[#A69B95]" oninput="updatePreview()">
                 </div>
             </div>
 
             <div class="space-y-6">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Content Input</label>
+                    <label class="block text-xs font-bold text-[#5D4037] uppercase tracking-widest mb-3">Content Input</label>
                     <div class="space-y-4">
                         <div>
                             <input type="text" id="inputWorkTitle" placeholder="本月写作标题" 
-                                   class="w-full p-4 border border-[#d4cbbd] bg-[#fdfbf7] rounded-lg text-sm focus:ring-1 focus:ring-classic-gold focus:border-classic-gold shadow-sm transition-shadow hover:shadow-md" oninput="updatePreview()">
+                                   class="w-full p-4 border-2 border-[#D8D0C5] bg-white/80 rounded-lg text-sm focus:ring-2 focus:ring-[#D9825B] focus:border-[#D9825B] shadow-sm transition-shadow hover:shadow-md text-[#5D4037] placeholder-[#A69B95]" oninput="updatePreview()">
                         </div>
                         <div>
-                            <input type="text" id="inputCP" placeholder="CP名" 
-                                   class="w-full p-4 border border-[#d4cbbd] bg-[#fdfbf7] rounded-lg text-sm focus:ring-1 focus:ring-classic-gold focus:border-classic-gold shadow-sm transition-shadow hover:shadow-md" oninput="updatePreview()">
+                            <input type="text" id="inputCP" placeholder="CP名 (可选)" 
+                                   class="w-full p-4 border-2 border-[#D8D0C5] bg-white/80 rounded-lg text-sm focus:ring-2 focus:ring-[#D9825B] focus:border-[#D9825B] shadow-sm transition-shadow hover:shadow-md text-[#5D4037] placeholder-[#A69B95]" oninput="updatePreview()">
                         </div>
                     </div>
                 </div>
                 
                 <div>
-                    <label class="block text-xs font-medium text-slate-500 mb-2">最喜欢的片段</label>
+                    <label class="block text-xs font-medium text-[#5D4037] mb-2">最喜欢的片段</label>
                     <textarea id="inputSnippet" rows="6" placeholder="输入那个让你心动的瞬间..." 
-                              class="w-full p-4 border border-[#d4cbbd] bg-[#fdfbf7] rounded-lg text-sm focus:ring-1 focus:ring-classic-gold focus:border-classic-gold leading-relaxed shadow-sm transition-shadow hover:shadow-md resize-none" oninput="updatePreview()"></textarea>
+                              class="w-full p-4 border-2 border-[#D8D0C5] bg-white/80 rounded-lg text-sm focus:ring-2 focus:ring-[#D9825B] focus:border-[#D9825B] leading-relaxed shadow-sm transition-shadow hover:shadow-md resize-none text-[#5D4037] placeholder-[#A69B95]" oninput="updatePreview()"></textarea>
                 </div>
                 
                 <div>
-                    <label class="block text-xs font-medium text-slate-500 mb-2">Free Talk</label>
+                    <label class="block text-xs font-medium text-[#5D4037] mb-2">Free Talk</label>
                     <textarea id="inputFreeTalk" rows="3" placeholder="本月的一点碎碎念..." 
-                              class="w-full p-4 border border-[#d4cbbd] bg-[#fdfbf7] rounded-lg text-sm focus:ring-1 focus:ring-classic-gold focus:border-classic-gold shadow-sm transition-shadow hover:shadow-md" oninput="updatePreview()"></textarea>
+                              class="w-full p-4 border-2 border-[#D8D0C5] bg-white/80 rounded-lg text-sm focus:ring-2 focus:ring-[#D9825B] focus:border-[#D9825B] shadow-sm transition-shadow hover:shadow-md text-[#5D4037] placeholder-[#A69B95]" oninput="updatePreview()"></textarea>
                 </div>
             </div>
         </div>
 
-        <div class="p-6 border-t border-[#d4cbbd] bg-[#e3dcd1] z-10">
-            <!-- 按钮样式已在 CSS 中更新 -->
+        <div class="p-6 border-t border-[#D8D0C5] bg-brand-body z-10">
             <button onclick="generateImage()" id="generateBtn" 
                     class="snap-btn w-full font-oswald font-bold py-4 px-4 rounded-xl flex items-center justify-center gap-3 text-2xl relative overflow-hidden">
                 <span class="relative z-10">SNAP</span>
                 <span class="text-sm relative z-10 opacity-70 font-normal normal-case ml-1 tracking-normal">生成拍立得</span>
             </button>
-            <p class="text-center text-xs text-slate-500 mt-3 font-serif-sc">相机会自动拍照并贴到白板上</p>
+            <p class="text-center text-xs text-[#5D4037]/70 mt-3 font-serif-sc">相机会自动拍照并贴到白板上</p>
         </div>
     </div>
 
@@ -459,12 +521,10 @@
                 <div id="januaryHeader" class="mb-5 relative">
                     <div class="absolute -top-6 -right-4 text-7xl font-playfair font-black text-slate-200 select-none z-0 opacity-80 rotate-12">2025</div>
                     <div class="relative z-10 text-center">
-                        <!-- 修改：深蓝色文字改为 vintage-brown -->
                         <h2 id="viewMainTitle" class="text-4xl font-serif-sc font-bold text-vintage-brown tracking-wider mb-3 mt-4">文手年度总结</h2>
                         <div class="inline-flex flex-col items-center">
                             <div class="py-1 px-5 flex items-center gap-2">
                                 <span class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">WRITTEN BY</span>
-                                <!-- 修改：文字颜色 -->
                                 <span class="font-serif-sc font-bold text-vintage-brown text-sm" id="viewFiller">NAME</span>
                             </div>
                         </div>
@@ -473,9 +533,8 @@
 
                 <div class="flex items-center justify-between mb-4 pb-2">
                     <div class="flex items-baseline gap-3">
-                        <!-- 修改：文字颜色 -->
                         <div class="text-4xl font-playfair font-black text-vintage-brown leading-none uppercase tracking-tight" id="viewMonthName">JAN</div>
-                        <div class="h-6 w-[1px] bg-classic-gold rotate-12"></div>
+                        <div class="h-6 w-[1px] bg-classic-gold rotate-12" id="viewDivider"></div>
                         <div class="text-lg font-serif-sc font-bold text-classic-gold leading-none" id="viewMonthCN">一月</div>
                     </div>
                     <div class="text-5xl font-playfair font-bold text-slate-100 select-none" id="viewMonthNum">01</div>
@@ -485,26 +544,25 @@
                     <div class="flex flex-col gap-2 px-1">
                         <div class="flex items-baseline gap-2">
                             <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded uppercase tracking-wider min-w-fit">Title</span>
-                            <!-- 修改：文字颜色 -->
                             <span class="text-lg font-serif-sc font-bold text-vintage-brown w-full leading-tight" id="viewWorkTitle">无题</span>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2" id="viewCPRow">
                             <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded uppercase tracking-wider min-w-fit">CP</span>
-                            <!-- 修改：文字颜色，保持宋体 -->
-                            <span class="bg-yellow-100 px-2 py-0.5 rounded text-sm font-bold text-vintage-brown font-serif-sc" id="viewCP">---</span>
+                            <!-- 修改：不再使用 bg-yellow-100 类，改为JS动态控制 -->
+                            <span class="px-2 py-0.5 rounded text-sm font-bold text-vintage-brown font-serif-sc" id="viewCP">---</span>
                         </div>
                     </div>
 
-                    <div class="relative paper-scrap p-4 rotate-1 bg-white transform transition-transform">
+                    <div class="relative paper-scrap p-4 rotate-1 bg-white transform transition-transform" id="viewSnippetContainer">
                         <div id="viewSnippet" class="font-serif-sc text-slate-700 text-sm leading-7 text-justify whitespace-pre-wrap">
                             等待输入...
                         </div>
                     </div>
 
                     <div class="mt-auto pt-2">
-                         <div class="relative paper-scrap p-3 bg-yellow-50 -rotate-1 transform transition-transform">
+                         <div class="relative paper-scrap p-3 bg-yellow-50 -rotate-1 transform transition-transform" id="viewFreeTalkContainer">
                              <div class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-8 h-4 tape-gold -rotate-2 z-10"></div>
-                             <div class="text-[10px] font-bold text-classic-gold uppercase tracking-wider mb-1">Free Talk</div>
+                             <div class="text-[10px] font-bold text-classic-gold uppercase tracking-wider mb-1" id="viewFreeTalkLabel">Free Talk</div>
                              <div id="viewFreeTalk" class="text-xs text-slate-600 leading-relaxed font-serif-sc relative z-10">
                                  ...
                              </div>
@@ -521,18 +579,17 @@
 
     <!-- 右侧：白板展示区 -->
     <div class="flex-1 cork-board flex flex-col h-full shadow-2xl relative z-10" id="boardExportArea">
-        <div class="p-6 bg-[#e3dcd1]/90 backdrop-blur border-b border-[#d4cbbd] shadow-sm flex justify-between items-center z-[60] sticky top-0">
+        <div class="p-6 bg-[#F0ECE3]/90 backdrop-blur border-b border-[#D8D0C5] shadow-sm flex justify-between items-center z-[60] sticky top-0">
             <div class="flex items-center gap-3">
                 <span class="w-3 h-3 rounded-full bg-classic-gold shadow-lg ring-2 ring-white"></span>
                 <h3 class="font-bold text-vintage-brown text-xl font-serif-sc">我的年度白板</h3>
             </div>
             <div class="flex items-center gap-3">
-                <span class="text-sm font-bold text-white bg-classic-gold px-3 py-1.5 rounded-full shadow-md" id="countBadge">0 / 12</span>
-                <!-- 导出白板按钮: 修改颜色 -->
-                <button onclick="exportFullBoard()" class="text-sm font-bold bg-vintage-brown text-white border border-[#431407] px-3 py-1.5 rounded-full shadow-md hover:bg-[#270b04] transition-colors flex items-center gap-2">
+                <span class="text-sm font-bold text-[#5D4037] bg-white/80 px-3 py-1.5 rounded-full shadow-md border border-[#D8D0C5]" id="countBadge">0 张</span>
+                <button onclick="exportFullBoard()" class="text-sm font-bold bg-vintage-brown text-white border border-[#D9825B] px-3 py-1.5 rounded-full shadow-md hover:bg-[#D9825B] transition-colors flex items-center gap-2">
                     <span>🖼️</span> 导出白板长图
                 </button>
-                <button onclick="downloadAll()" id="downloadAllBtn" class="text-sm font-bold bg-white text-vintage-brown border border-[#d4cbbd] px-3 py-1.5 rounded-full shadow-md hover:bg-slate-50 transition-colors hidden">
+                <button onclick="downloadAll()" id="downloadAllBtn" class="text-sm font-bold bg-white text-vintage-brown border border-[#D8D0C5] px-3 py-1.5 rounded-full shadow-md hover:bg-slate-50 transition-colors hidden">
                     📦 打包原图 (ZIP)
                 </button>
             </div>
@@ -555,7 +612,7 @@
                 </div>
             </div>
 
-            <div class="w-full flex flex-col items-center justify-center mt-12 text-slate-500 opacity-40 select-none pointer-events-none" id="emptyState">
+            <div class="w-full flex flex-col items-center justify-center mt-12 text-[#5D4037] opacity-40 select-none pointer-events-none" id="emptyState">
                 <div class="text-7xl mb-4 grayscale animate-pulse">📷</div>
                 <p class="text-lg font-serif-sc">在左侧输入，点击 SNAP<br>填满这面墙</p>
             </div>
@@ -572,14 +629,164 @@
             { num: '11', name: 'NOV', cn: '十一月' }, { num: '12', name: 'DEC', cn: '十二月' }
         ];
 
-        // 存储干净的图片数据 (无胶带)
-        const generatedPhotos = {}; 
-        let isGenerating = false;
+        // 手帐淡雅风配色库 + 高光块颜色
+        const palettes = [
+            { name: "原木", bg: "#fdfbf7", text: "#5D4037", accent: "#C5A065", noteBg: "#fff", talkBg: "#fefce8", highlight: "#fef9c3" }, // 黄色
+            { name: "薄荷", bg: "#f0fdf4", text: "#14532d", accent: "#15803d", noteBg: "#fff", talkBg: "#dcfce7", highlight: "#dcfce7" }, // 浅绿
+            { name: "海盐", bg: "#f0f9ff", text: "#0c4a6e", accent: "#0284c7", noteBg: "#fff", talkBg: "#e0f2fe", highlight: "#e0f2fe" }, // 浅蓝
+            { name: "樱花", bg: "#fff1f2", text: "#881337", accent: "#e11d48", noteBg: "#fff", talkBg: "#ffe4e6", highlight: "#ffe4e6" }, // 浅粉
+            { name: "香芋", bg: "#faf5ff", text: "#581c87", accent: "#9333ea", noteBg: "#fff", talkBg: "#f3e8ff", highlight: "#f3e8ff" }, // 浅紫
+            { name: "迷雾", bg: "#f8fafc", text: "#334155", accent: "#64748b", noteBg: "#fff", talkBg: "#f1f5f9", highlight: "#f1f5f9" }  // 浅灰
+        ];
 
-        window.onload = function() {
+        let generatedPhotos = []; 
+        let isGenerating = false;
+        let selectedPaletteIndex = -1;
+        let db; // Database instance
+
+        // 1. 初始化 DB
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open("WriterSummaryPolaroidDB", 1);
+                
+                request.onerror = (event) => {
+                    console.error("Database error: ", event.target.error);
+                    reject(event.target.error);
+                };
+
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    // Create object store for photos with 'id' as keyPath
+                    if (!db.objectStoreNames.contains("photos")) {
+                        db.createObjectStore("photos", { keyPath: "id" });
+                    }
+                };
+
+                request.onsuccess = (event) => {
+                    db = event.target.result;
+                    resolve(db);
+                };
+            });
+        }
+
+        // 2. Load photos on start
+        async function loadPhotosFromDB() {
+            if (!db) return;
+            return new Promise((resolve) => {
+                const transaction = db.transaction(["photos"], "readonly");
+                const objectStore = transaction.objectStore("photos");
+                const request = objectStore.getAll();
+
+                request.onsuccess = (event) => {
+                    const photos = event.target.result;
+                    // Render saved photos
+                    photos.forEach(photo => {
+                        generatedPhotos.push(photo);
+                        renderPhotoToGallery(photo, false); // false = no animation
+                    });
+                    updateCount();
+                    if(photos.length > 0) {
+                        document.getElementById('emptyState').style.display = 'none';
+                    }
+                    resolve();
+                };
+            });
+        }
+
+        // 3. Save photo
+        function savePhotoToDB(photoObj) {
+            if (!db) return;
+            const transaction = db.transaction(["photos"], "readwrite");
+            const objectStore = transaction.objectStore("photos");
+            objectStore.add(photoObj);
+        }
+
+        // 4. Delete photo
+        function deletePhotoFromDB(id) {
+            if (!db) return;
+            const transaction = db.transaction(["photos"], "readwrite");
+            const objectStore = transaction.objectStore("photos");
+            objectStore.delete(id);
+        }
+
+        window.onload = async function() {
             handleMonthChange();
             updatePreview();
+            renderPaletteSelector();
+            applyPalette(palettes[0]); 
+            
+            try {
+                await initDB();
+                await loadPhotosFromDB();
+            } catch (e) {
+                console.log("DB Init failed (likely private mode or sandboxed iframe):", e);
+            }
         };
+
+        function renderPaletteSelector() {
+            const container = document.getElementById('paletteSelector');
+            container.innerHTML = '';
+
+            const randomBtn = document.createElement('div');
+            randomBtn.className = 'color-dot random-dot-bg selected';
+            randomBtn.title = "随机配色";
+            randomBtn.innerHTML = '<span class="flex items-center justify-center w-full h-full text-[10px] text-gray-500 font-bold">?</span>';
+            randomBtn.onclick = () => selectPalette(-1, randomBtn);
+            container.appendChild(randomBtn);
+
+            palettes.forEach((palette, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'color-dot';
+                btn.title = palette.name;
+                btn.style.backgroundColor = palette.bg;
+                btn.style.borderColor = palette.accent;
+                btn.onclick = () => selectPalette(index, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectPalette(index, clickedBtn) {
+            selectedPaletteIndex = index;
+            
+            const allDots = document.querySelectorAll('.color-dot');
+            allDots.forEach(dot => dot.classList.remove('selected'));
+            clickedBtn.classList.add('selected');
+
+            if (index !== -1) {
+                applyPalette(palettes[index]);
+            }
+        }
+
+        function applyPalette(palette) {
+            const card = document.getElementById('polaroidCard');
+            card.style.backgroundColor = palette.bg;
+
+            const titles = ['viewMainTitle', 'viewFiller', 'viewMonthName', 'viewWorkTitle', 'viewCP'];
+            titles.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.style.color = palette.text;
+            });
+
+            const accents = ['viewMonthCN', 'viewFreeTalkLabel'];
+            accents.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.style.color = palette.accent;
+            });
+            
+            const divider = document.getElementById('viewDivider');
+            if(divider) divider.style.backgroundColor = palette.accent;
+
+            const snippetContainer = document.getElementById('viewSnippetContainer');
+            if(snippetContainer) snippetContainer.style.backgroundColor = palette.noteBg;
+
+            const freeTalkContainer = document.getElementById('viewFreeTalkContainer');
+            if(freeTalkContainer) freeTalkContainer.style.backgroundColor = palette.talkBg;
+
+            const cpEl = document.getElementById('viewCP');
+            if (cpEl) {
+                cpEl.style.backgroundColor = palette.highlight;
+            }
+        }
 
         function handleMonthChange() {
             const select = document.getElementById('monthSelect');
@@ -608,24 +815,96 @@
             const mainTitle = document.getElementById('inputMainTitle').value || '文手年度总结';
             const filler = document.getElementById('inputFiller').value || '---';
             const workTitle = document.getElementById('inputWorkTitle').value || '无题';
-            const cp = document.getElementById('inputCP').value || '---';
+            const cpInput = document.getElementById('inputCP');
             const snippet = document.getElementById('inputSnippet').value || '（等待生成...）';
             const freeTalk = document.getElementById('inputFreeTalk').value || '...';
 
             document.getElementById('viewMainTitle').textContent = mainTitle;
             document.getElementById('viewFiller').textContent = filler.toUpperCase();
             document.getElementById('viewWorkTitle').textContent = workTitle;
-            document.getElementById('viewCP').textContent = cp;
+            
+            const cpVal = cpInput.value.trim();
+            const cpRow = document.getElementById('viewCPRow');
+            if (cpVal) {
+                cpRow.style.display = 'flex';
+                document.getElementById('viewCP').textContent = cpVal;
+            } else {
+                cpRow.style.display = 'none';
+            }
+
             document.getElementById('viewSnippet').textContent = snippet;
             document.getElementById('viewFreeTalk').textContent = freeTalk;
+        }
+
+        // Separate function to render photo to DOM
+        function renderPhotoToGallery(photoObj, animate = true) {
+            const gallery = document.getElementById('galleryContainer');
+            const placeholder = document.createElement('div');
+            
+            if(animate) {
+                // Animation logic (create flying img etc.)
+                // This logic is coupled with generation, let's keep it simple for reload
+                // For reload, we just append. For new gen, we do animation in generateImage then call this?
+                // Actually, let's just use the wrapper creation logic here.
+            }
+
+            // Create wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'gallery-wrapper';
+            // Random rotate for variety or use saved if we saved it? 
+            // We didn't save rotation in previous step, let's generate deterministic random based on ID or just random
+            // Better to save rotation. But for now random is fine on reload.
+            const randomRotate = Math.random() * 6 - 3; 
+            wrapper.style.transform = `rotate(${randomRotate}deg)`;
+            wrapper.dataset.photoId = photoObj.id; 
+
+            const tape = document.createElement('div');
+            tape.className = 'tape-on-board';
+            
+            const img = new Image();
+            img.src = photoObj.data;
+            img.className = 'gallery-image';
+            
+            const dlBtn = document.createElement('button');
+            dlBtn.className = 'download-btn-single';
+            dlBtn.innerHTML = '⬇';
+            dlBtn.title = '下载原图';
+            dlBtn.onclick = (e) => {
+                e.stopPropagation();
+                downloadPhoto(photoObj.id); 
+            };
+
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-btn-single';
+            delBtn.innerHTML = '×'; 
+            delBtn.title = '删除照片';
+            delBtn.onclick = (e) => {
+                e.stopPropagation();
+                deletePhoto(photoObj.id, wrapper);
+            };
+
+            wrapper.appendChild(tape);
+            wrapper.appendChild(img);
+            wrapper.appendChild(dlBtn);
+            wrapper.appendChild(delBtn);
+
+            gallery.appendChild(wrapper);
         }
 
         function generateImage() {
             if (isGenerating) return;
             isGenerating = true;
 
+            if (selectedPaletteIndex === -1) {
+                const randomPalette = palettes[Math.floor(Math.random() * palettes.length)];
+                applyPalette(randomPalette);
+            } else {
+                applyPalette(palettes[selectedPaletteIndex]);
+            }
+
             const monthVal = parseInt(document.getElementById('monthSelect').value);
-            const target = document.getElementById('capture-target');
+            // 修改点：直接获取 #polaroidCard 而不是 #capture-target
+            const target = document.getElementById('polaroidCard'); 
             const gallery = document.getElementById('galleryContainer');
             const btn = document.getElementById('generateBtn');
             const camFlash = document.getElementById('camFlash');
@@ -655,8 +934,20 @@
                     document.getElementById('emptyState').style.display = 'none';
 
                     const imgData = canvas.toDataURL('image/png');
-                    generatedPhotos[monthVal] = imgData;
+                    const photoId = Date.now() + Math.random(); 
+                    
+                    const photoObj = {
+                        id: photoId,
+                        monthIdx: monthVal,
+                        data: imgData
+                    };
+                    
+                    // Save to memory
+                    generatedPhotos.push(photoObj);
+                    // Save to DB
+                    savePhotoToDB(photoObj);
 
+                    // Animation
                     const flyingImg = document.createElement('img');
                     flyingImg.src = imgData;
                     flyingImg.className = 'flying-photo';
@@ -680,17 +971,9 @@
                     setTimeout(() => {
                         const placeholder = document.createElement('div');
                         placeholder.className = 'placeholder-item';
-                        
-                        const existingItem = document.getElementById(`wrapper-month-${monthVal}`);
-                        let targetRect;
-                        
-                        if (existingItem) {
-                            targetRect = existingItem.getBoundingClientRect();
-                        } else {
-                            gallery.appendChild(placeholder);
-                            gallery.scrollTop = gallery.scrollHeight;
-                            targetRect = placeholder.getBoundingClientRect();
-                        }
+                        gallery.appendChild(placeholder);
+                        gallery.scrollTop = gallery.scrollHeight;
+                        const targetRect = placeholder.getBoundingClientRect();
 
                         flyingImg.style.transition = 'all 1.0s cubic-bezier(0.25, 1, 0.5, 1)';
                         flyingImg.style.top = `${targetRect.top}px`;
@@ -701,10 +984,11 @@
                         flyingImg.style.transform = `scale(1) rotate(${randomRotate}deg)`;
 
                         setTimeout(() => {
+                            // Instead of calling global render, we construct locally to replace placeholder
                             const wrapper = document.createElement('div');
                             wrapper.className = 'gallery-wrapper';
-                            wrapper.id = `wrapper-month-${monthVal}`;
                             wrapper.style.transform = `rotate(${randomRotate}deg)`;
+                            wrapper.dataset.photoId = photoId; 
 
                             const tape = document.createElement('div');
                             tape.className = 'tape-on-board';
@@ -716,21 +1000,27 @@
                             const dlBtn = document.createElement('button');
                             dlBtn.className = 'download-btn-single';
                             dlBtn.innerHTML = '⬇';
-                            dlBtn.title = '下载原图 (无胶带)';
+                            dlBtn.title = '下载原图';
                             dlBtn.onclick = (e) => {
                                 e.stopPropagation();
-                                downloadSingle(monthVal);
+                                downloadPhoto(photoId); 
+                            };
+
+                            const delBtn = document.createElement('button');
+                            delBtn.className = 'delete-btn-single';
+                            delBtn.innerHTML = '×'; 
+                            delBtn.title = '删除照片';
+                            delBtn.onclick = (e) => {
+                                e.stopPropagation();
+                                deletePhoto(photoId, wrapper);
                             };
 
                             wrapper.appendChild(tape);
                             wrapper.appendChild(img);
                             wrapper.appendChild(dlBtn);
+                            wrapper.appendChild(delBtn);
 
-                            if (existingItem) {
-                                gallery.replaceChild(wrapper, existingItem);
-                            } else {
-                                gallery.replaceChild(wrapper, placeholder);
-                            }
+                            gallery.replaceChild(wrapper, placeholder);
 
                             flyingImg.remove();
                             
@@ -747,36 +1037,50 @@
             }, 100); 
         }
 
+        function deletePhoto(id, element) {
+            if (element) {
+                element.remove();
+            }
+            generatedPhotos = generatedPhotos.filter(p => p.id !== id);
+            // Delete from DB
+            deletePhotoFromDB(id);
+            
+            updateCount();
+            if (generatedPhotos.length === 0) {
+                document.getElementById('emptyState').style.display = 'flex';
+            }
+        }
+
         function updateCount() {
-            const count = Object.keys(generatedPhotos).length;
-            document.getElementById('countBadge').textContent = `${count} / 12`;
+            const count = generatedPhotos.length;
+            document.getElementById('countBadge').textContent = `${count} 张`;
             
             const dlAllBtn = document.getElementById('downloadAllBtn');
             if (count > 0) {
                 dlAllBtn.classList.remove('hidden');
+            } else {
+                dlAllBtn.classList.add('hidden');
             }
         }
 
-        function downloadSingle(monthVal) {
-            const dataUrl = generatedPhotos[monthVal];
-            if (!dataUrl) return;
+        function downloadPhoto(id) {
+            const item = generatedPhotos.find(p => p.id === id);
+            if (!item) return;
             const link = document.createElement('a');
-            link.href = dataUrl;
-            link.download = `Summary2025_${monthData[monthVal-1].name}.png`;
+            link.href = item.data;
+            link.download = `Summary2025_${monthData[item.monthIdx-1].name}_${Date.now()}.png`;
             link.click();
         }
 
         function downloadAll() {
             const zip = new JSZip();
-            const keys = Object.keys(generatedPhotos);
             
-            if (keys.length === 0) return;
+            if (generatedPhotos.length === 0) return;
 
-            keys.forEach(key => {
-                const monthIdx = parseInt(key);
-                const dataUrl = generatedPhotos[monthIdx];
+            generatedPhotos.forEach((item, index) => {
+                const dataUrl = item.data;
                 const base64Data = dataUrl.replace(/^data:image\/(png|jpg);base64,/, "");
-                const fileName = `Summary2025_${monthData[monthIdx-1].name}.png`;
+                const fileName = `Summary2025_${monthData[item.monthIdx-1].name}_${index+1}.png`;
                 zip.file(fileName, base64Data, {base64: true});
             });
 
@@ -786,13 +1090,10 @@
             });
         }
 
-        // 导出整个白板长图
         function exportFullBoard() {
             const gallery = document.getElementById('galleryContainer');
-            // 获取填表人名字
             const fillerName = document.getElementById('inputFiller').value || 'Writer';
             
-            // 获取真实滚动高度
             const fullHeight = gallery.scrollHeight;
             const fullWidth = gallery.scrollWidth;
 
@@ -800,19 +1101,16 @@
                 height: fullHeight,
                 width: fullWidth,
                 windowHeight: fullHeight,
-                scale: 8, // 提升到8倍清晰度
+                scale: 8, 
                 useCORS: true,
-                backgroundColor: '#e3dcd1', // 确保背景色正确
+                backgroundColor: '#F0ECE3', 
                 onclone: (clonedDoc) => {
-                    // 确保克隆出的容器是展开的
                     const clonedGallery = clonedDoc.getElementById('galleryContainer');
                     clonedGallery.style.height = fullHeight + 'px';
                     clonedGallery.style.overflow = 'visible';
-                    // 确保相机也在
                     const clonedCamera = clonedDoc.getElementById('camera');
                     clonedCamera.style.position = 'absolute'; 
 
-                    // 创建标题容器
                     const headerGroup = clonedDoc.createElement('div');
                     headerGroup.style.position = 'absolute';
                     headerGroup.style.width = '100%';
@@ -824,17 +1122,15 @@
                     headerGroup.style.alignItems = 'center';
                     headerGroup.style.gap = '8px';
 
-                    // 1. 主标题 - 颜色改为 vintage-brown
                     const title = clonedDoc.createElement('div');
                     title.innerText = '我的年度总结白板';
                     title.style.fontFamily = '"Noto Serif SC", serif';
                     title.style.fontSize = '48px';
                     title.style.fontWeight = '900'; 
-                    title.style.color = '#431407'; // vintage-brown
+                    title.style.color = '#5D4037'; 
                     
-                    // 2. 填表人信息
                     const subtitle = clonedDoc.createElement('div');
-                    subtitle.innerHTML = `<span style="font-family: 'Playfair Display', serif; font-style: italic; color: #7c2d12; font-size: 18px; margin-right: 8px;">Written by</span><span style="font-family: 'Noto Serif SC', serif; font-weight: bold; color: #d97706; font-size: 24px;">${fillerName}</span>`;
+                    subtitle.innerHTML = `<span style="font-family: 'Playfair Display', serif; font-style: italic; color: #9a3412; font-size: 18px; margin-right: 8px;">Written by</span><span style="font-family: 'Noto Serif SC', serif; font-weight: bold; color: #D9825B; font-size: 24px;">${fillerName}</span>`;
 
                     headerGroup.appendChild(title);
                     headerGroup.appendChild(subtitle);
